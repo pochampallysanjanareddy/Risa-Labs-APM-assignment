@@ -1,0 +1,8 @@
+{
+  "name": "risa-sponsor-growth-center",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sponsor Growth Center: dashboard, campaign/task management and AI growth analyst for the RISA Labs Growth APM assignment (Challenge B).",
+  "scripts": { "dev": "node dev-server.js", "test": "node tests/engine.test.js" },
+  "engines": { "node": ">=18" }
+}

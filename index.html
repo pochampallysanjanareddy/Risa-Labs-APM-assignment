@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sponsor Growth Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: a sponsorship team's operations desk — calm, exact, decision-first.
+   IDEA: a newspaper graphics desk's live scoreboard for one campaign: the finding as headline, then the evidence.
+   PICTURE: the confirmed-vs-goal race line and the funnel are the first screen's picture.
+   COLOUR and TYPE: deck navy ink, deck blue as the one data hue, orange accent for the target; Space Grotesk numbers, Inter text.
+   LAYOUT: top bar with the as-of date, tabbed work areas, copilot docked on the right. */
+:root{color-scheme:light dark;
+ --bg:light-dark(#F6F4EF,#12161D);--panel:light-dark(#FFFFFF,#1A2029);--panel2:light-dark(#EFEBE2,#202734);
+ --ink:light-dark(#13233A,#E9EDF3);--muted:light-dark(#5A6472,#9AA4B2);--line:light-dark(#DDD7CA,#2E3746);
+ --blue:light-dark(#234E8C,#6FA0E6);--blue-soft:light-dark(#E3EAF4,#1E2C42);--series:light-dark(#257de0,#338ced);
+ --orange:light-dark(#B4501D,#F08A4B);--orange-soft:light-dark(#F8E6D9,#3A2A20);
+ --good:light-dark(#1F6B3A,#3CC266);--good-soft:light-dark(#E2F0E4,#16301F);--warn:light-dark(#9A5B00,#F2B24C);--warn-soft:light-dark(#FBEFD9,#35290F);
+ --bad:light-dark(#A32626,#F07272);--bad-soft:light-dark(#F7E1E1,#3A1C1C);--violet:light-dark(#5B3A9E,#B9A2F0);
+ --shadow:0 1px 2px rgba(0,0,0,.06)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,system-ui,sans-serif;overflow-x:clip}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{font-family:'Space Grotesk',Inter,sans-serif;margin:0;line-height:1.1;text-wrap:balance}
+h1{font-size:20px}h2{font-size:clamp(22px,2.4vw,30px)}h3{font-size:17px}
+.muted{color:var(--muted)}.small{font-size:13px}.num{font-variant-numeric:tabular-nums}
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:10px max(2vw,14px)}
+.brand{display:flex;flex-direction:column}.brand .small{margin-top:2px}
+.asof{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-left:auto}
+.asof label{font-size:13px;color:var(--muted)}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 10px;font-size:12.5px;font-weight:600;background:var(--panel2);white-space:nowrap}
+.chip.saved{background:var(--good-soft);color:var(--good)}.chip.sandbox{background:var(--warn-soft);color:var(--warn)}.chip.orig{background:var(--blue-soft);color:var(--blue)}
+.btn{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:7px 12px;cursor:pointer;min-height:36px;font-weight:500}
+.btn:hover{border-color:var(--blue)}.btn.pri{background:var(--blue);border-color:var(--blue);color:#fff}.btn.sm{min-height:30px;padding:4px 9px;font-size:13px}
+.btn.ghost{border-color:transparent;background:transparent}.btn:disabled{opacity:.5;cursor:default}
+:focus-visible{outline:2px solid var(--series);outline-offset:2px}
+input,select,textarea{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:7px 9px;min-height:36px;font-size:15px}
+textarea{width:100%;resize:vertical}
+.tabs{display:flex;gap:4px;overflow-x:auto;padding:0 max(2vw,14px);background:var(--panel);border-bottom:1px solid var(--line)}
+.tabs button{border:0;background:none;padding:11px 12px;cursor:pointer;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap}
+.tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--orange)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 420px;min-height:calc(100vh - 110px)}
+.layout.nocop{grid-template-columns:minmax(0,1fr)}
+main{padding:18px max(2vw,14px) 60px;display:flex;flex-direction:column;gap:18px}
+.banner{border-radius:10px;padding:10px 14px;font-size:14px}.banner.warn{background:var(--warn-soft)}.banner.info{background:var(--blue-soft)}
+.headline{display:flex;flex-direction:column;gap:6px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:12px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;box-shadow:var(--shadow)}
+.kpi .v{font-family:'Space Grotesk';font-size:28px;font-weight:700;line-height:1.1}
+.kpi .l{font-size:13px;color:var(--muted)}
+.meter{height:6px;border-radius:4px;background:var(--panel2);overflow:hidden;margin-top:6px}.meter i{display:block;height:100%;background:var(--series);border-radius:4px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+.card>h3{margin-bottom:10px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px}
+.fig{position:relative;height:230px}.fig svg{position:absolute;inset:0;width:100%;height:100%}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-size:12.5px;padding:6px 8px;border-radius:6px;white-space:nowrap;transform:translate(-50%,-110%);display:none}
+.legend{display:flex;gap:14px;font-size:13px;color:var(--muted);flex-wrap:wrap;margin-top:6px}.legend i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:5px;border-radius:2px}
+.bars{display:flex;flex-direction:column;gap:6px}
+.bar{display:grid;grid-template-columns:150px minmax(0,1fr) 92px;gap:10px;align-items:center;font-size:14px}
+.bar .track{height:18px;background:var(--panel2);border-radius:4px;overflow:hidden}.bar .fill{height:100%;border-radius:0 4px 4px 0;background:var(--series)}
+.bar .val{text-align:right;font-variant-numeric:tabular-nums}
+.status{display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:13px;border-radius:6px;padding:2px 8px}
+.st-scale{background:var(--good-soft);color:var(--good)}.st-change{background:var(--warn-soft);color:var(--warn)}.st-stop{background:var(--bad-soft);color:var(--bad)}.st-early,.st-nodata{background:var(--panel2);color:var(--muted)}
+.bet{display:flex;flex-direction:column;gap:6px}
+.rec{display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:12px;align-items:start;padding:10px 0;border-top:1px solid var(--line)}
+.rec:first-child{border-top:0}.rec .dot{width:10px;height:10px;border-radius:50%;margin-top:6px}
+.sev-high{background:var(--bad)}.sev-medium{background:var(--warn)}.sev-low{background:var(--good)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{text-align:left;font-weight:600;color:var(--muted);font-size:12.5px;padding:7px 8px;border-bottom:2px solid var(--line);white-space:nowrap;cursor:default}
+th.sort{cursor:pointer}
+td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+td.r,th.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.click{cursor:pointer}tr.click:hover td{background:var(--panel2)}
+.pill{display:inline-block;border-radius:6px;padding:1px 7px;font-size:12.5px;font-weight:600;background:var(--panel2);white-space:nowrap}
+.pill.won{background:var(--good-soft);color:var(--good)}.pill.lost,.pill.withdrawn{background:var(--bad-soft);color:var(--bad)}.pill.open{background:var(--blue-soft);color:var(--blue)}.pill.stale{background:var(--warn-soft);color:var(--warn)}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.form label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
+.form .wide{grid-column:1/-1}
+.overlay{position:fixed;inset:0;background:rgba(10,14,20,.45);z-index:50;display:flex;justify-content:flex-end}
+.drawer{background:var(--bg);width:min(640px,100%);height:100%;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:14px;box-shadow:-8px 0 24px rgba(0,0,0,.2)}
+.timeline{display:flex;flex-direction:column;gap:6px;border-left:2px solid var(--line);padding-left:12px}
+.timeline div{font-size:14px}
+.empty{padding:22px;text-align:center;color:var(--muted)}
+/* copilot */
+.cop{border-left:1px solid var(--line);background:var(--panel);display:flex;flex-direction:column;position:sticky;top:57px;height:calc(100vh - 57px)}
+.cop header{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.cop header h3{flex:1}
+.msgs{flex:1;overflow:auto;padding:12px 14px;display:flex;flex-direction:column;gap:12px}
+.msg{border-radius:12px;padding:9px 12px;font-size:14.5px;line-height:1.5;max-width:100%;overflow-wrap:anywhere}
+.msg.u{background:var(--blue);color:#fff;align-self:flex-end;max-width:88%}
+.msg.a{background:var(--panel2)}
+.msg.a table{font-size:13px;margin:6px 0}.msg.a td,.msg.a th{padding:4px 6px}
+.msg.a p{margin:6px 0}.msg.a ul{margin:6px 0;padding-left:20px}.msg.a h4{margin:8px 0 4px;font-size:14.5px}
+.msg .steps{font-size:12.5px;color:var(--muted);margin-bottom:4px}
+.draft{border:1px dashed var(--violet);border-radius:10px;padding:9px 11px;margin-top:8px;background:var(--panel);display:flex;flex-direction:column;gap:6px}
+.draft b{color:var(--violet)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 10px}
+.chips button{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:5px 10px;font-size:12.5px;cursor:pointer}
+.composer{border-top:1px solid var(--line);padding:10px 14px;display:flex;gap:8px;align-items:flex-end}
+.composer textarea{min-height:44px;max-height:140px}
+.fab{display:none}
+@media(max-width:1100px){.layout{grid-template-columns:minmax(0,1fr)}.cop{position:fixed;right:0;top:0;height:100%;width:min(440px,100%);z-index:40;box-shadow:-8px 0 24px rgba(0,0,0,.2)}.cop.hide{display:none}
+ .fab{display:inline-flex;position:fixed;right:16px;bottom:16px;z-index:30;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25)}}
+@media(max-width:600px){.bar{grid-template-columns:96px minmax(0,1fr) 70px;font-size:13px}.kpi .v{font-size:23px}.asof{margin-left:0}
+ table{font-size:13px}.stack thead{display:none}.stack tr{display:grid;padding-block:8px;border-bottom:1px solid var(--line)}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:8em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;color:var(--muted);font-size:12px}.stack td:empty{display:none}}
+@media(prefers-reduced-motion:no-preference){.fill,.meter i{transition:width .4s ease}}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="brand"><h1>Sponsor Growth Center</h1><span class="small muted" id="dsname">CampusFest sponsorship · loading data…</span></div>
+  <span class="chip" id="modechip">Connecting…</span>
+  <div class="asof">
+    <label for="asof">Data as of</label>
+    <button class="btn sm" data-act="asof-step" data-d="-7" aria-label="One week earlier">−1 wk</button>
+    <input type="date" id="asof">
+    <button class="btn sm" data-act="asof-step" data-d="7" aria-label="One week later">+1 wk</button>
+    <select id="asofpreset" aria-label="Jump to date"><option value="">Jump to…</option></select>
+  </div>
+</div>
+<nav class="tabs" role="tablist" id="tabs">
+  <button role="tab" data-tab="overview" aria-selected="true">Overview</button>
+  <button role="tab" data-tab="campaigns">Campaigns</button>
+  <button role="tab" data-tab="pipeline">Pipeline</button>
+  <button role="tab" data-tab="brands">Brands</button>
+  <button role="tab" data-tab="tasks">Tasks</button>
+  <button role="tab" data-tab="plan">Plan, targets &amp; data</button>
+</nav>
+<div class="layout" id="layout">
+  <main id="main"><div class="empty">Loading the sponsor dataset…</div></main>
+  <aside class="cop hide" id="cop" aria-label="AI growth analyst">
+    <header><h3>AI growth analyst</h3><button class="btn sm ghost" data-act="cop-clear">Clear</button><button class="btn sm ghost" data-act="cop-close" aria-label="Close">✕</button></header>
+    <div class="msgs" id="msgs"></div>
+    <div class="chips" id="chips"></div>
+    <form class="composer" id="composer">
+      <textarea id="q" rows="2" placeholder="Ask about campaigns, deals, targets…" aria-label="Question"></textarea>
+      <div style="display:flex;flex-direction:column;gap:6px"><button class="btn pri" id="send" type="submit">Ask</button><button class="btn sm" id="stop" type="button" hidden>Stop</button></div>
+    </form>
+  </aside>
+</div>
+<button class="btn pri fab" data-act="cop-open" id="fab">Ask the analyst</button>
+<div id="modal"></div>
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
